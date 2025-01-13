@@ -1,0 +1,248 @@
+<div class="container mt-4">
+  <h2 class="text-center text-primary">Kelola Pengiriman</h2>
+
+   <!-- Loader -->
+   <div class="d-flex justify-content-center mt-4" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <button
+  type="button"
+  class="btn btn-primary mb-3"
+  data-bs-toggle="modal"
+  data-bs-target="#tambahPengirimanModal"
+>
+  Tambah Pengiriman
+</button>
+
+  <div class="modal fade" 
+  id="tambahPengirimanModal" 
+  tabindex="-1" 
+  aria-labelledby="tambahPengirimanModalLabel"
+  aria-hidden="true">
+
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tambahPengirimanModalLabel">
+            Tambah Pengiriman
+          </h5>
+          <button type="button"
+           class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="pengirimanForm" (ngSubmit)="addPengiriman()">
+            <div class="mb-3">
+              <label for="pemesanan_id" class="form-label">Pemesanan</label>
+              <select id="pemesanan_id" 
+              class="form-select" 
+              formControlName="pemesanan_id">
+                <option *ngFor="let pemesanan of pemesanan" [value]="pemesanan._id">
+                  {{ pemesanan.nama }} 
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="alamat" class="form-label">Alamat</label>
+              <input 
+              type="text" 
+              id="alamat"
+               class="form-control"
+                formControlName="alamat" />
+            </div>
+            <div class="mb-3">
+              <label for="kota" class="form-label">Kota</label>
+              <input 
+              type="text"
+               id="kota"
+                class="form-control"
+                 formControlName="kota" />
+            </div>
+            <div class="mb-3">
+              <label for="kodePos" class="form-label">Kode Pos</label>
+              <input 
+              type="text"
+               id="kodePos"
+                class="form-control" 
+                formControlName="kodePos" />
+            </div>
+            <div class="mb-3">
+              <label for="negara" class="form-label">Negara</label>
+              <input 
+              type="text" 
+              id="negara" 
+              class="form-control" 
+              formControlName="negara" />
+            </div>
+            <div class="mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select id="status" class="form-select" formControlName="status">
+                <option value="Pending">Pending</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            </div>
+            <button type="submit"
+             class="btn btn-primary" 
+             [disabled]="isSubmitting">
+              {{ isSubmitting ? 'Menyimpan...' : 'Tambah Pengiriman' }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal Edit Pengiriman -->
+<div
+  class="modal fade"
+  id="editPengirimanModal"
+  tabindex="-1"
+  aria-labelledby="editPengirimanModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPengirimanModalLabel">Ubah Pengiriman</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="pengirimanForm" (ngSubmit)="updatePengiriman()">
+          <!-- Pemesanan Selection -->
+          <div class="mb-3">
+            <label for="pemesanan" class="form-label">Pilih Pemesanan</label>
+            <select
+              id="pemesanan"
+              class="form-select"
+              formControlName="pemesanan_id"
+            >
+              <option *ngFor="let pemesanan of pemesanan " [value]="pemesanan._id">
+                {{ pemesanan.nama }} 
+              </option>
+            </select>
+          </div>
+
+          <!-- Alamat -->
+          <div class="mb-3">
+            <label for="alamat" class="form-label">Alamat Pengiriman</label>
+            <input
+              id="alamat"
+              type="text"
+              class="form-control"
+              formControlName="alamat"
+            />
+          </div>
+
+          <!-- Kota -->
+          <div class="mb-3">
+            <label for="kota" class="form-label">Kota</label>
+            <input
+              id="kota"
+              type="text"
+              class="form-control"
+              formControlName="kota"
+            />
+          </div>
+
+          <!-- Kode Pos -->
+          <div class="mb-3">
+            <label for="kodePos" class="form-label">Kode Pos</label>
+            <input
+              id="kodePos"
+              type="text"
+              class="form-control"
+              formControlName="kodePos"
+            />
+          </div>
+
+          <!-- Negara -->
+          <div class="mb-3">
+            <label for="negara" class="form-label">Negara</label>
+            <input
+              id="negara"
+              type="text"
+              class="form-control"
+              formControlName="negara"
+            />
+          </div>
+
+          <!-- Status -->
+          <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select id="status" class="form-select" formControlName="status">
+              <option value="Pending">Pending</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isSubmitting"
+          >
+            {{ isSubmitting ? "Menyimpan..." : "Ubah Pengiriman" }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Data Pengiriman -->
+<div class="row row-cols-1 row-cols-md-3 g-4 mt-4" *ngIf="!isLoading">
+  <div class="col" *ngFor="let item of pengiriman">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ item.pemesanan?.nama }}</h5>
+        <p class="card-text">
+          <!-- <strong>Produk:</strong> {{ item.pemesanan?.produk_id?.nama }} -->
+          <br />
+          <strong>Pemesanan:</strong> {{ item.pemesanan_id?.nama }}
+          <br />
+          <strong>Alamat:</strong> {{ item.alamat }}
+          <br />
+          <strong>Kota:</strong> {{ item.kota }}
+          <br />
+          <strong>Kode Pos:</strong> {{ item.kodePos }}
+          <br />
+          <strong>Negara:</strong> {{ item.negara }}
+          <br />
+          <strong>Status:</strong> {{ item.status }}
+        </p>
+
+        <!-- Edit Button -->
+        <button
+          type="button"
+          class="btn btn-warning mt-3 me-2"
+          (click)="getPengirimanById(item._id)"
+        >
+          Edit
+        </button>
+
+        <!-- Delete Button -->
+        <button
+          type="button"
+          class="btn btn-danger mt-3"
+          (click)="deletePengiriman(item._id)"
+        >
+          Hapus
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  

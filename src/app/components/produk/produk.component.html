@@ -1,0 +1,220 @@
+<div class="container mt-4">
+  <h2 class="text-center text-primary mb-4">Daftar Produk</h2>
+
+  <!-- Loader -->
+  <div class="d-flex justify-content-center mt-4" *ngIf="isLoading">
+      <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+      </div>
+  </div>
+
+  <!-- Tombol untuk membuka modal -->
+  <button
+      type="button"
+      class="btn btn-primary mb-3 btn-lg"
+      data-bs-toggle="modal"
+      data-bs-target="#tambahProdukModal"
+  >
+      <i class="bi bi-plus-circle"></i> Tambah Produk
+  </button>
+
+  <!-- Modal Tambah Produk -->
+  <div
+      class="modal fade"
+      id="tambahProdukModal"
+      tabindex="-1"
+      aria-labelledby="tambahProdukModalLabel"
+      aria-hidden="true"
+  >
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="tambahProdukModalLabel">
+                      Tambah Produk
+                  </h5>
+                  <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                  ></button>
+              </div>
+              <div class="modal-body">
+                  <form [formGroup]="produkForm" (ngSubmit)="addProduk()">
+                      <div class="mb-3">
+                          <label for="nama" class="form-label">Nama Produk</label>
+                          <input
+                              id="nama"
+                              type="text"
+                              class="form-control"
+                              formControlName="nama"
+                          />
+                      </div>
+                      <div class="mb-3">
+                          <label for="deskripsi" class="form-label">Deskripsi</label>
+                          <textarea
+                              id="deskripsi"
+                              class="form-control"
+                              rows="3"
+                              formControlName="deskripsi"
+                          ></textarea>
+                      </div>
+                      <div class="mb-3">
+                          <label for="harga" class="form-label">Harga</label>
+                          <input
+                              id="harga"
+                              type="number"
+                              class="form-control"
+                              formControlName="harga"
+                          />
+                      </div>
+                      <div class="mb-3">
+                          <label for="kategori" class="form-label">Kategori</label>
+                          <select
+                              id="kategori"
+                              class="form-select"
+                              formControlName="kategori"
+                          >
+                              <option value="Moisturizer">Moisturizer</option>
+                              <option value="Serum">Serum</option>
+                              <option value="Toner">Toner</option>
+                              <option value="Facial Wash">Facial Wash</option>
+                          </select>
+                      </div>
+                      <button
+                          type="submit"
+                          class="btn btn-primary w-100"
+                          [disabled]="isSubmitting"
+                      >
+                          {{ isSubmitting ? "Menyimpan..." : "Tambah Produk" }}
+                      </button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Data Produk -->
+  <div *ngIf="produk.length > 0" class="table-responsive">
+      <table class="table table-hover align-middle">
+          <thead class="table-dark">
+              <tr>
+                  <th>No</th>
+                  <th>Nama Produk</th>
+                  <th>Deskripsi</th>
+                  <th>Harga</th>
+                  <th>Kategori</th>
+                  <th>Aksi</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr
+                  *ngFor="let item of produk | paginate: { itemsPerPage: 5, currentPage: currentPage }; index as i"
+              >
+                  <td>{{ (currentPage - 1) * 5 + i + 1 }}</td>
+                  <td>{{ item.nama }}</td>
+                  <td>{{ item.deskripsi }}</td>
+                  <td>{{ item.harga | currency:'IDR':'symbol-narrow' }}</td>
+                  <td>{{ item.kategori }}</td>
+                  <td>
+                      <button
+                          type="button"
+                          class="btn btn-warning me-2"
+                          (click)="getProdukById(item._id)"
+                      >
+                          <i class="bi bi-pencil"></i> Edit
+                      </button>
+                      <button
+                          type="button"
+                          class="btn btn-danger"
+                          (click)="deleteProduk(item._id)"
+                      >
+                          <i class="bi bi-trash"></i> Hapus
+                      </button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <!-- Modal Edit Produk -->
+<div
+class="modal fade"
+id="editProdukModal"
+tabindex="-1"
+aria-labelledby="editProdukModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="editProdukModalLabel">Ubah Produk</h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="produkForm" (ngSubmit)="updateProduk()">
+        <div class="mb-3">
+          <label for="editNama" class="form-label">Nama</label>
+          <input
+            id="editNama"
+            type="text"
+            class="form-control"
+            formControlName="nama"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="deskripsi" class="form-label">Deskripsi</label>
+          <textarea
+            id="deskripsi"
+            class="form-control"
+            formControlName="deskripsi"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="harga" class="form-label">Harga</label>
+          <input
+            id="harga"
+            type="number"
+            class="form-control"
+            formControlName="harga"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="kategori" class="form-label">Kategori</label>
+          <select
+            id="kategori"
+            class="form-select"
+            formControlName="kategori"
+          >
+            <option value="">Pilih Kategori</option>
+            <option *ngFor="let kategori of kategoriList" [value]="kategori">
+              {{ kategori }}
+            </option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSubmitting"
+        >
+          {{ isSubmitting ? "Menyimpan..." : "Ubah Produk" }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+      <!-- Pagination Controls -->
+      <pagination-controls
+          class="d-flex justify-content-center"
+          (pageChange)="currentPage = $event"
+      ></pagination-controls>
+  </div>
+</div>

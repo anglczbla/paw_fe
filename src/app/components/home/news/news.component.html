@@ -1,0 +1,72 @@
+<div class="news-section">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="controller-container">
+            <div class="header-container">
+              <h1>Skincare Discount</h1>
+              <h3>Discount Up to 50% Off</h3>
+            </div>
+            <div class="controller-section">
+              <button (click)="onPrev()" mat-button color="primary" 
+              class="btn-controller btn-prev button-prev">
+                <img src="assets/images/right-chevron.png" alt="image-news" />
+              </button>
+              <button (click)="onNext()" mat-button class="btn-controller btn-next button-next">
+                <img src="assets/images/right-chevron.png" alt="image-news" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <swiper-container  
+          #newSwiper 
+          class="new-swiper" 
+          pagination="true" 
+          >
+          @for (news of listNews; track news) {
+            <swiper-slide>
+              <div class="news-container">
+                <img [src]="news.image" alt="image-news" class="news-image" />
+                <div class="overlay"></div>
+                <div class="news-description">
+                  <div class="row-news-1">
+                    <div class="tag">
+                      <i class="fa-solid fa-tag"></i>
+                     {{news.tag}}
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="time-post">
+                      <i class="fa-solid fa-clock"></i>
+                     {{news.datePost | datFormat }} 
+                    </div>
+                  </div>
+                  <div class="row-news-2">
+                    <div class="header-news">
+                      {{news.title}}
+                    </div>
+                  </div>
+                  <div class="row-news-3">
+                    <div class="author-news">
+                      <i class="fa-solid fa-pen-nib"></i>
+                      {{news.author}}
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="share-action">
+                      Share <i class="fa-solid fa-share-nodes"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </swiper-slide>
+        }
+          </swiper-container>
+        </div>
+      </div>
+      <div class="row next-news">
+        <div class="col">
+          <p class="link-next-news">More Discount</p>
+        </div>
+      </div>
+    </div>
+  </div>

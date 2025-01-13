@@ -1,0 +1,44 @@
+<mat-toolbar class="header-menu-section" [class.sticky-nav]="isScrolled">
+    <img src="assets/images/download.png" alt="logo" class="logo" />
+    <h1 class="logo-text">Skincare App</h1>
+    <span class="spacer"></span>
+    <button mat-icon-button class="menu-btn" aria-label="menu-btn">
+      <mat-icon></mat-icon>
+    </button>
+    <div class="menu-collapse">
+      <mat-list role="list" class="list-menu">
+        <mat-list-item (click)="gotoDiv('home')">
+          <span><a class="nav-link" href="/home">Home</a></span>
+        </mat-list-item>
+        <mat-list-item (click)="gotoDiv('produk')" role="listitem">
+          <span><a class="nav-link" href="/produk">Produk</a></span>
+        </mat-list-item>
+        <mat-list-item (click)="gotoDiv('pemesanan')" role="listitem">
+          <span><a class="nav-link" href="/pemesanan">Pemesanan</a></span>
+        </mat-list-item>
+        <mat-list-item (click)="gotoDiv('pengiriman')" role="listitem">
+          <span><a class="nav-link" href="/pengiriman">Pengiriman</a></span>
+        </mat-list-item>
+        <mat-list-item (click)="gotoDiv('wishlist')" role="listitem">
+          <span><a class="nav-link" href="/wishlist">WishList</a></span>
+        </mat-list-item>
+        <mat-list-item (click)="gotoDiv('testimoni')" role="listitem">
+          <span><a class="nav-link" href="/testimoni">Testimoni</a></span>
+        </mat-list-item>
+        <!-- Corrected Login/Logout Logic -->
+        <mat-list-item role="listitem">
+          <span *ngIf="!isLoggedIn">
+            <a class="nav-link" href="/auth" routerLinkActive="active" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+              Login
+            </a>
+          </span>
+          <span *ngIf="isLoggedIn">
+            <a class="nav-link" (click)="onLogout()" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+              Logout
+            </a>
+          </span>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </mat-toolbar>
+  

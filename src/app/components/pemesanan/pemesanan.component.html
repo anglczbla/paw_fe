@@ -1,0 +1,223 @@
+<div class="container mt-4">
+  <h2 class="text-center text-primary mb-4">Daftar Pemesanan</h2>
+
+  <!-- Loader -->
+  <div class="d-flex justify-content-center mt-4" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Tombol untuk membuka modal -->
+  <button
+    type="button"
+    class="btn btn-primary mb-3"
+    data-bs-toggle="modal"
+    data-bs-target="#tambahPemesananModal"
+  >
+    Tambah Pemesanan
+  </button>
+  <div
+    class="modal fade"
+    id="tambahPemesananModal"
+    tabindex="-1"
+    aria-labelledby="tambahPemesananModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tambahPemesananModalLabel">
+            Tambah Pemesanan
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="pemesananForm" (ngSubmit)="addPemesanan()">
+            <div class="mb-3">
+              <label for="nama" class="form-label">Nama</label>
+              <input
+                id="nama"
+                type="text"
+                class="form-control"
+                formControlName="nama"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="produk_id" class="form-label">Produk</label>
+              <select
+                id="produk_id"
+                class="form-select"
+                formControlName="produk_id"
+              >
+                <option *ngFor="let produk of produk" [value]="produk._id">
+                  {{ produk.nama }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="order" class="form-label">Tanggal Pemesanan</label>
+              <input
+                id="order"
+                type="datetime-local"
+                class="form-control"
+                formControlName="order"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="selesai" class="form-label">Tanggal Selesai</label>
+              <input
+                id="selesai"
+                type="datetime-local"
+                class="form-control"
+                formControlName="selesai"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="batasOrder" class="form-label">Batas Order</label>
+              <input
+                id="batasOrder"
+                type="number"
+                class="form-control"
+                formControlName="batasOrder"
+              />
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isSubmitting"
+            >
+              {{ isSubmitting ? "Menyimpan..." : "Tambah Pemesanan" }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Edit Pemesanan -->
+  <div
+    class="modal fade"
+    id="editPemesananModal"
+    tabindex="-1"
+    aria-labelledby="editPemesananModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editPemesananModalLabel">Ubah Pemesanan</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="pemesananForm" (ngSubmit)="updatePemesanan()">
+            <div class="mb-3">
+              <label for="nama" class="form-label">Nama Pemesan</label>
+              <input
+                id="nama"
+                type="text"
+                class="form-control"
+                formControlName="nama"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="produk" class="form-label">Produk</label>
+              <select
+                id="produk"
+                class="form-select"
+                formControlName="produk_id"
+              >
+                <option value="">Pilih Produk</option>
+                <option *ngFor="let produk of produk" [value]="produk._id">
+                  {{ produk.nama }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="order" class="form-label">Tanggal Pemesanan</label>
+              <input
+                id="order"
+                type="datetime-local"
+                class="form-control"
+                formControlName="order"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="selesai" class="form-label">Tanggal Selesai</label>
+              <input
+                id="selesai"
+                type="datetime-local"
+                class="form-control"
+                formControlName="selesai"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="batasOrder" class="form-label">Batas Order</label>
+              <input
+                id="batasOrder"
+                type="number"
+                class="form-control"
+                formControlName="batasOrder"
+              />
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isSubmitting"
+            >
+              {{ isSubmitting ? "Menyimpan..." : "Ubah Pemesanan" }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Pemesanan -->
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-4" *ngIf="!isLoading">
+    <div class="col" *ngFor="let item of pemesanan">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+         <h5 class="card-title">{{ item.pemesanan?.nama  }}</h5>
+          <p class="card-text">
+            <strong>Nama:</strong> {{ item.nama }}
+            <br />
+            <strong>Produk:</strong> {{ item.produk_id?.nama }}
+            <br />
+            <strong>Tanggal Pemesanan:</strong> {{ item.order | date:'short' }}
+            <br />
+            <strong>Tanggal Selesai:</strong> {{ item.selesai | date:'short' }}
+            <br />
+            <strong>Batas Order:</strong> {{ item.batasOrder }}
+          </p>
+          <button
+            type="button"
+            class="btn btn-warning mt-3 me-2"
+            (click)="getPemesananById(item._id)"
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger mt-3"
+            (click)="deletePemesanan(item._id)"
+          >
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 

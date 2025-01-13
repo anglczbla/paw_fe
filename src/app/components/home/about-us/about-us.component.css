@@ -1,0 +1,118 @@
+.about-section {
+    background-color: #f1f2f6;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .about-section .container {
+    margin-left: 12rem;
+    margin-right: 12rem;
+  }
+  .about-section .container .header-master {
+    width: 18rem;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  .about-section .container .row {
+    display: flex;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    flex-flow: row;
+    align-items: start;
+    gap: 2rem;
+  }
+  .about-section .container .headmaster-speach .speach-container .speach-content {
+    position: relative;
+    font: 400 1.5em/1.8em "Lora", serif;
+    text-align: justify;
+  }
+  
+  .about-section .container .headmaster-speach .footer .name,
+  .about-section .container .headmaster-speach .footer .role {
+    font-weight: bold;
+    font-size: 1.2em;
+    font-family: "Lora", serif;
+  }
+  
+  .about-section .container .headmaster-speach .quote {
+    display: none;
+    width: 50px;
+  }
+  .about-section .container .headmaster-speach .quote-container {
+    display: flex;
+  }
+  .about-section .container .headmaster-speach .right-quote {
+    justify-content: end;
+  }
+  .about-section .container .headmaster-speach .left-quote .quote {
+    transform: scaleY(-1);
+  }
+  .about-section .container .headmaster-speach .right-quote .quote {
+    transform: scaleX(-1);
+  }
+  
+  @media (max-width: 1190px) {
+    .about-section
+      .container
+      .headmaster-speach
+      .speach-container
+      .speach-content {
+      font: 400 1.3em/1.8em "Lora", serif;
+    }
+    .about-section .container {
+      margin-left: 8rem;
+      margin-right: 8rem;
+    }
+  }
+  
+  @media (max-width: 1050px) {
+    .about-section
+      .container
+      .headmaster-speach
+      .speach-container
+      .speach-content {
+      font: 400 1.1em/1.8em "Lora", serif;
+    }
+  }
+  @media (max-width: 900px) {
+    .about-section .container {
+      margin-left: 5rem;
+      margin-right: 5rem;
+    }
+  }
+  @media (max-width: 750px) {
+    .about-section .container {
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+    .about-section
+      .container
+      .headmaster-speach
+      .speach-container
+      .speach-content {
+      font: 400 1em/1.8em "Lora", serif;
+    }
+    .about-section .container .headmaster-speach .footer .name,
+    .about-section .container .headmaster-speach .footer .role {
+      font-weight: bold;
+      font-size: 1em;
+      font-family: "Lora", serif;
+    }
+    .about-section .container .row {
+      gap: 1rem;
+    }
+    .about-section .container .header-master {
+      width: 15rem;
+    }
+  }
+  @media (max-width: 600px) {
+    .about-section .container .header-master {
+      display: none;
+    }
+    .about-section .container .headmaster-speach .quote {
+      display: block;
+    }
+    .about-section .container .row {
+      gap: 0;
+    }
+  }

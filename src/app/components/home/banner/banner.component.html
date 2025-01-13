@@ -1,0 +1,17 @@
+<div class="banner-section" id="bannerId">
+  <swiper-container class="banner-swiper"  autoplay-delay="2500" autoplay-disable-on-interaction="false" effect="fade">
+    @for (banner of listBanner; track banner) {
+      <swiper-slide>
+        <img [src]="banner" alt="banner image" class="banner-image" />
+      </swiper-slide>
+    }
+  </swiper-container>
+  <div class="banner-overlay">
+    <div class="banner-layer"></div>
+    <div class="banner-description">
+      <h1>Skincare App</h1>
+      <h2>Kecantikan Di Mulai Dari Kulit Yang Sehat</h2>
+      <button mat-flat-button class="btn-login">Sign Up</button>
+    </div>
+  </div>
+</div>

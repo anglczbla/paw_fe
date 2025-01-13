@@ -1,0 +1,261 @@
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">Testimoni</h2>
+  
+    <!-- Loader -->
+    <div class="d-flex justify-content-center mt-4" *ngIf="isLoading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- Tombol untuk membuka modal tambah testimoni -->
+    <button
+      type="button"
+      class="btn btn-primary mb-3"
+      data-bs-toggle="modal"
+      data-bs-target="#tambahTestimoniModal"
+    >
+      Tambah Testimoni
+    </button>
+  
+    <!-- Modal Tambah Testimoni -->
+    <div
+      class="modal fade"
+      id="tambahTestimoniModal"
+      tabindex="-1"
+      aria-labelledby="tambahTestimoniModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="tambahTestimoniModalLabel">
+              Tambah Testimoni
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="testimoniForm" (ngSubmit)="addTestimoni()">
+              <div class="mb-3">
+                <label for="nama" class="form-label">Nama</label>
+                <input
+                  id="nama"
+                  type="text"
+                  class="form-control"
+                  formControlName="nama"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="pemesanan_id" class="form-label">Pemesanan</label>
+                <select
+                  id="pemesanan_id"
+                  class="form-select"
+                  formControlName="pemesanan_id"
+                >
+                  <option *ngFor="let pemesanan of pemesanan" [value]="pemesanan._id">
+                    {{ pemesanan.selesai}}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="pengiriman_id" class="form-label">Pengiriman</label>
+                <select
+                  id="pengiriman_id"
+                  class="form-select"
+                  formControlName="pengiriman_id"
+                >
+                  <option *ngFor="let pengiriman of pengiriman" [value]="pengiriman._id">
+                    {{ pengiriman.status}}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="pesan" class="form-label">Pesan</label>
+                <textarea
+                  id="pesan"
+                  class="form-control"
+                  rows="3"
+                  formControlName="pesan"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <select
+                  id="rating"
+                  class="form-select"
+                  formControlName="rating"
+                >
+                  <option value="1">1 - Sangat Buruk</option>
+                  <option value="2">2 - Buruk</option>
+                  <option value="3">3 - Cukup</option>
+                  <option value="4">4 - Baik</option>
+                  <option value="5">5 - Sangat Baik</option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary w-100"
+                [disabled]="isSubmitting"
+              >
+                {{ isSubmitting ? "Menyimpan..." : "Tambah Testimoni" }}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  <!-- Data Testimoni -->
+<div *ngIf="testimoni.length > 0" class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Tanggal Pemesanan</th>
+        <th>Status Pengiriman</th>
+        <th>Pesan</th>
+        <th>Rating</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let item of testimoni | paginate: { itemsPerPage: 5, currentPage: currentPage };
+          index as i
+        "
+      >
+        <td>{{ (currentPage - 1) * 5 + i + 1 }}</td>
+        <td>{{ item.nama }}</td>
+        <td>{{ item.pemesanan_id?.selesai  }}</td>
+        <td>{{ item.pengiriman_id?.status }}</td>
+        <td>{{ item.pesan }}</td>
+        <td>{{ item.rating }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-warning me-2"
+            (click)="getTestimoniById(item._id)"
+          >
+            <i class="bi bi-pencil"></i> Edit
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteTestimoni(item._id)"
+          >
+            <i class="bi bi-trash"></i> Hapus
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pesan jika tidak ada testimoni -->
+<div *ngIf="testimoni.length === 0" class="alert alert-info text-center">
+  Tidak ada testimoni yang tersedia.
+</div>
+
+<!-- Pagination Controls -->
+<pagination-controls
+  class="d-flex justify-content-center"
+  (pageChange)="currentPage = $event"
+></pagination-controls>
+
+  <!-- Modal Edit Testimoni -->
+  <div
+    class="modal fade"
+    id="editTestimoniModal"
+    tabindex="-1"
+    aria-labelledby="editTestimoniModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editTestimoniModalLabel">Ubah Testimoni</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="testimoniForm" (ngSubmit)="updateTestimoni()">
+            <div class="mb-3">
+              <label for="editNama" class="form-label">Nama</label>
+              <input
+                id="editNama"
+                type="text"
+                class="form-control"
+                formControlName="nama"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="pemesanan_id" class="form-label">Pemesanan</label>
+              <select
+                id="pemesanan_id"
+                class="form-select"
+                formControlName="pemesanan_id"
+              >
+                <option *ngFor="let pemesanan of pemesanan" [value]="pemesanan._id">
+                  {{ pemesanan.selesai }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="pengiriman_id" class="form-label">Pengiriman</label>
+              <select
+                id="pengiriman_id"
+                class="form-select"
+                formControlName="pengiriman_id"
+              >
+                <option *ngFor="let pengiriman of pengiriman" [value]="pengiriman._id">
+                  {{ pengiriman.status }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editPesan" class="form-label">Pesan</label>
+              <textarea
+                id="editPesan"
+                class="form-control"
+                formControlName="pesan"
+                rows="3"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="editRating" class="form-label">Rating</label>
+              <select
+                id="editRating"
+                class="form-select"
+                formControlName="rating"
+              >
+                <option value="1">1 - Sangat Buruk</option>
+                <option value="2">2 - Buruk</option>
+                <option value="3">3 - Cukup</option>
+                <option value="4">4 - Baik</option>
+                <option value="5">5 - Sangat Baik</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isSubmitting"
+            >
+              {{ isSubmitting ? "Menyimpan..." : "Ubah Testimoni" }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

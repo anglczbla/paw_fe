@@ -1,0 +1,208 @@
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">Daftar Wishlist</h2>
+  
+    <!-- Loader -->
+    <div class="d-flex justify-content-center mt-4" *ngIf="isLoading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- Tombol untuk membuka modal -->
+    <button
+      type="button"
+      class="btn btn-primary mb-3"
+      data-bs-toggle="modal"
+      data-bs-target="#tambahWishlistModal"
+    >
+      Tambah Wishlist
+    </button>
+  
+    <!-- Modal Tambah Wishlist -->
+    <div
+      class="modal fade"
+      id="tambahWishlistModal"
+      tabindex="-1"
+      aria-labelledby="tambahWishlistModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="tambahWishlistModalLabel">
+              Tambah Wishlist
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="wishlistForm" (ngSubmit)="addWishlist()">
+              <div class="mb-3">
+                <label for="nama" class="form-label">Nama</label>
+                <input
+                  id="nama"
+                  type="text"
+                  class="form-control"
+                  formControlName="nama"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="produk_id" class="form-label">Produk</label>
+                <select
+                  id="produk_id"
+                  class="form-select"
+                  formControlName="produk_id"
+                >
+                  <option *ngFor="let produk of produk" [value]="produk._id">
+                    {{ produk.nama }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="tanggal" class="form-label">Tanggal Ditambahkan</label>
+                <input
+                  id="tanggal"
+                  type="date"
+                  class="form-control"
+                  formControlName="tanggal"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select
+                  id="status"
+                  class="form-select"
+                  formControlName="status"
+                >
+                  <option value="Ingin Dibeli">Ingin Dibeli</option>
+                  <option value="Sudah Dibeli">Sudah Dibeli</option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="isSubmitting"
+              >
+                {{ isSubmitting ? "Menyimpan..." : "Tambah Wishlist" }}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Modal Edit Wishlist -->
+    <div
+      class="modal fade"
+      id="editWishlistModal"
+      tabindex="-1"
+      aria-labelledby="editWishlistModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editWishlistModalLabel">Ubah Wishlist</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="wishlistForm" (ngSubmit)="updateWishlist()">
+              <div class="mb-3">
+                <label for="nama" class="form-label">Nama</label>
+                <input
+                  id="nama"
+                  type="text"
+                  class="form-control"
+                  formControlName="nama"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="produk" class="form-label">Produk</label>
+                <select
+                  id="produk"
+                  class="form-select"
+                  formControlName="produk_id"
+                >
+                  <option *ngFor="let produk of produk" [value]="produk._id">
+                    {{ produk.nama }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="tanggal" class="form-label">Tanggal Ditambahkan</label>
+                <input
+                  id="tanggal"
+                  type="date"
+                  class="form-control"
+                  formControlName="tanggal"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select
+                  id="status"
+                  class="form-select"
+                  formControlName="status"
+                >
+                  <option value="Ingin Dibeli">Ingin Dibeli</option>
+                  <option value="Sudah Dibeli">Sudah Dibeli</option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="isSubmitting"
+              >
+                {{ isSubmitting ? "Menyimpan..." : "Ubah Wishlist" }}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Data Wishlist -->
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-4" *ngIf="!isLoading">
+      <div class="col" *ngFor="let item of wishlist">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.nama }}</h5>
+            <p class="card-text">
+              <strong>Nama:</strong> {{ item.nama }}
+              <br />
+              <strong>Produk:</strong> {{ item.produk_id?.nama }}
+              <br />
+              <strong>Tanggal Ditambahkan:</strong> {{ item.tanggal | date:'short' }}
+              <br />
+              <strong>Status:</strong> {{ item.status }}
+            </p>
+            <button
+              type="button"
+              class="btn btn-warning mt-3 me-2"
+              (click)="getWishlistById(item._id)"
+            >
+              Edit
+            </button>
+  
+            <button
+              type="button"
+              class="btn btn-danger mt-3"
+              (click)="deleteWishlist(item._id)"
+            >
+              Hapus
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
